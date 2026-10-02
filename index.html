@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AEGIS Notepad</title>
+<style>
+:root{--bg:#050505;--panel:#0b0b0d;--panel2:#111114;--gold:#d6b45a;--gold2:#f3d77b;--line:#5d4918;--text:#f1f1f1;--muted:#aaa;--red:#ff5656}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#29200b 0%,#0b0b0c 42%,#030303 100%);color:var(--text);font:15px Arial,sans-serif;min-height:100vh}
+button,input,select{font:inherit}button{cursor:pointer;color:var(--text);background:#101012;border:1px solid #514116;border-radius:9px;padding:10px 13px;transition:.18s}button:hover{border-color:var(--gold);background:#201a0b}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold)}
+.top{height:100px;display:flex;align-items:center;gap:18px;padding:14px 22px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.brand{display:flex;align-items:center;gap:12px;min-width:220px;color:var(--gold)}.logo{width:54px;height:54px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;font-size:31px;font-weight:bold;box-shadow:0 0 20px #d6b45a22}.brand strong{font-size:27px;letter-spacing:3px}.brand small{display:block;letter-spacing:3px;font-size:11px;margin-top:3px}
+.headline{margin:auto;text-align:center;border:1px solid var(--gold);padding:11px 30px;min-width:310px;clip-path:polygon(7% 0,93% 0,100% 50%,93% 100%,7% 100%,0 50%);background:#080808}.headline b{font-size:25px;letter-spacing:2px;color:var(--gold)}.headline span{display:block;color:#d9c78c;margin-top:4px}
+.top-actions{display:flex;gap:9px}.gold{border-color:var(--gold);color:var(--gold)}.layout{display:grid;grid-template-columns:270px minmax(0,1fr);margin:0 9px 9px;border:1px solid var(--line);border-radius:14px;min-height:calc(100vh - 110px);overflow:hidden;background:#070708}
+.sidebar{background:#0a0a0b;border-right:1px solid var(--line);padding:18px 16px;display:flex;flex-direction:column;gap:20px}.allnotes{display:flex;justify-content:space-between;width:100%;text-align:left;background:#211b0c;color:var(--gold);border-color:var(--gold)}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;color:#bbb;font-size:12px;letter-spacing:1px;margin-bottom:8px}.folder-list{display:grid;gap:5px}.folder{display:flex;justify-content:space-between;width:100%;text-align:left;border-color:transparent;background:transparent}.folder.active{background:#211b0c;border-color:#6b541d;color:var(--gold)}.folder span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sidebox{border:1px solid #4a3a17;border-radius:10px;padding:14px;background:#0d0d0e}.sidebox h3{font-size:13px;font-weight:normal;margin:0 0 10px}.storagebar{height:7px;background:#303030;border-radius:8px;overflow:hidden;margin:10px 0}.storagebar i{display:block;height:100%;background:linear-gradient(90deg,#a98524,var(--gold2));width:0}.quick{display:grid;gap:7px}.quick button{text-align:left;border-color:transparent;background:transparent}.quick button:hover{border-color:#5d4918}
+.main{min-width:0;display:flex;flex-direction:column}.tabs{height:60px;border-bottom:1px solid #292929;display:flex;align-items:center;gap:8px;padding:10px 20px;overflow:auto}.tab{white-space:nowrap}.tab.active{border-color:var(--gold);color:var(--gold);background:#1c170a}.workspace{padding:22px;flex:1;min-width:0}.notehead{display:flex;align-items:flex-start;gap:15px;justify-content:space-between;flex-wrap:wrap}.note-title{font-size:25px;background:transparent;border:0;color:white;min-width:200px;max-width:100%;padding:3px 0}.meta{color:var(--muted);font-size:12px;margin-top:8px}.actions{display:flex;gap:8px;flex-wrap:wrap}.danger{border-color:#7d2828;color:#ff6b6b}.edit-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,1fr);gap:14px;margin-top:22px}.editor-card,.media-card{border:1px solid #38332a;border-radius:11px;overflow:hidden;background:#0b0b0d;min-width:0}.toolbar{display:flex;gap:5px;flex-wrap:wrap;padding:9px;border-bottom:1px solid #333}.toolbar button{padding:7px 10px;border-color:#252525}.editor{min-height:470px;padding:22px;outline:none;line-height:1.7;overflow-wrap:anywhere}.editor:empty:before{content:"یہاں اپنا نوٹ لکھیں…";color:#777}.wordcount{padding:0 12px 10px;text-align:right;color:#777;font-size:11px}
+.media-section{padding:14px;border-bottom:1px solid #2c2c2c}.media-section:last-child{border-bottom:0}.media-title{display:flex;justify-content:space-between;color:var(--gold);font-weight:bold;margin-bottom:12px}.media-list{display:grid;gap:10px}.media-item{border:1px solid #292929;border-radius:9px;padding:9px;display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;align-items:center}.preview{width:110px;height:76px;object-fit:cover;background:#15151a;border-radius:6px;display:grid;place-items:center;color:var(--gold);font-size:28px}.media-item audio{width:100%;height:35px}.media-item video{width:100%;height:76px;object-fit:contain;background:#000;border-radius:6px}.media-name{overflow-wrap:anywhere;font-size:13px}.media-meta{color:#999;font-size:11px;margin-top:6px}.media-controls{display:flex;gap:5px;margin-top:8px}.media-controls button{padding:5px 8px;font-size:12px}.empty{color:#777;font-size:13px;padding:10px 0}.bottom{border-top:1px solid #302819;margin:0 22px;padding:14px 0;display:flex;justify-content:space-between;color:#aaa;font-size:12px}.saved{color:#70d78c}.hidden{display:none!important}#fileInput{display:none}.notice{color:#c8b36f;font-size:12px;margin-top:8px}
+@media(max-width:1000px){.top{height:auto;flex-wrap:wrap}.brand{min-width:unset}.headline{order:3;width:100%;margin:0}.top-actions{margin-left:auto}.layout{grid-template-columns:220px minmax(0,1fr)}.edit-grid{grid-template-columns:1fr}.editor{min-height:300px}}
+@media(max-width:650px){.top{padding:12px}.brand strong{font-size:20px}.brand small{font-size:9px}.logo{width:44px;height:44px}.top-actions{width:100%;justify-content:space-between}.top-actions button{flex:1;padding:9px 5px;font-size:12px}.headline{min-width:0}.headline b{font-size:20px}.layout{display:block;margin:0 5px 5px}.sidebar{border-right:0;border-bottom:1px solid var(--line);padding:12px;gap:12px}.folder-list{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebox{padding:10px}.quick{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace{padding:13px}.note-title{font-size:22px}.actions button{padding:8px;font-size:12px}.media-item{grid-template-columns:85px minmax(0,1fr);gap:9px}.preview{width:85px;height:68px}.media-item video{height:68px}.bottom{margin:0 13px}.tabs{padding:8px 12px}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="brand"><div class="logo">A</div><div><strong>AEGIS</strong><small>INTELLIGENCE</small></div></div>
+ <div class="headline"><b>▣ AEGIS NOTEPAD</b><span>Write. Save. Share. Anywhere.</span></div>
+ <div class="top-actions"><button class="gold" id="newNoteTop">＋ New Note</button><button id="importTop">⇧ Import</button><button id="shareAll">♧ Share All</button></div>
+</header>
+<div class="layout">
+ <aside class="sidebar">
+  <button class="allnotes" id="allNotes">▤ &nbsp; All Notes <span id="noteCount">0</span></button>
+  <section><div class="sectionhead">FOLDERS <button id="addFolder" title="New folder">＋</button></div><div class="folder-list" id="folders"></div></section>
+  <section><div class="sectionhead">SAVED NOTES <span id="savedCount">0</span></div><div class="folder-list" id="savedNotes"></div></section>
+  <section class="sidebox"><h3>STORAGE</h3><div id="storageText">Saved in this browser</div><div class="storagebar"><i id="storageBar"></i></div><div id="storageSub">Notes stay on this device</div></section>
+  <section class="sidebox"><h3>QUICK ACTIONS</h3><div class="quick"><button id="quickNew">▣ &nbsp; New Text Note</button><button id="uploadBtn">⇧ &nbsp; Upload Media</button><button id="uploadAudioBtn">♫ ＋ &nbsp; Upload Audio</button><button id="quickFolder">▱ &nbsp; New Folder</button><button id="importBtn">♧ &nbsp; Import Note</button></div><div class="notice">Tip: share/export a note to send it to someone.</div></section>
+  <section class="sidebox"><h3>⬡ AEGIS SYSTEM</h3><div style="color:var(--gold);font-size:12px">Private on this device.</div><div class="notice">Use Export/Share to make a portable copy.</div></section>
+ </aside>
+ <main class="main">
+  <div class="tabs" id="tabs"></div>
+  <div class="workspace">
+   <div class="notehead"><div style="min-width:0;flex:1"><input class="note-title" id="title" value="My First Note" aria-label="Note title"><div class="meta" id="meta">Created just now · Auto-save enabled</div></div><div class="actions"><button class="gold" id="shareNote">♧ Share</button><button id="exportNote">⇩ Export</button><button class="danger" id="deleteNote">▤ Delete</button></div></div>
+   <div class="edit-grid">
+    <section class="editor-card"><div class="toolbar">
+      <button data-cmd="formatBlock" data-val="H1">H1</button><button data-cmd="formatBlock" data-val="H2">H2</button><button data-cmd="formatBlock" data-val="H3">H3</button><button data-cmd="bold"><b>B</b></button><button data-cmd="italic"><i>I</i></button><button data-cmd="underline"><u>U</u></button><button data-cmd="insertUnorderedList">• List</button><button data-cmd="insertOrderedList">1. List</button><button data-cmd="justifyLeft">⇤</button><button data-cmd="justifyCenter">≡</button><button id="linkBtn">↗ Link</button><button id="clearFormat">Clear</button>
+     </div><div class="editor" id="editor" contenteditable="true" spellcheck="true"></div><div class="wordcount" id="wordcount">0 words</div></section>
+    <section class="media-card">
+     <div class="media-section"><div class="media-title">VIDEOS <span id="videoCount">(0)</span></div><div class="media-list" id="videos"></div></div>
+     <div class="media-section"><div class="media-title">AUDIOS <span id="audioCount">(0)</span></div><div class="media-list" id="audios"></div></div>
+     <div class="media-section"><div class="media-title">IMAGES <span id="imageCount">(0)</span><button id="addMedia">＋ Add Media</button></div><div class="media-list" id="images"></div></div>
+     <div class="media-section"><div class="media-title">FILES <span id="fileCount">(0)</span></div><div class="media-list" id="files"></div></div>
+    </section>
+   </div>
+  </div>
+  <footer class="bottom"><span class="saved" id="saveStatus">● All changes saved automatically</span><span>AEGIS NOTEPAD · Local mode</span></footer>
+ </main>
+</div>
+<input type="file" id="fileInput" multiple accept="image/*,video/*,audio/*,.pdf,.txt,.doc,.docx,.json">
+<input type="file" id="audioInput" multiple accept="audio/*">
+<script>
+const DB_NAME='aegis_notepad_db', STORE='media';
+let db, notes=[], folders=['My Notes','Study','Projects','Media','Personal'], activeFolder='All Notes', activeId=null, saveTimer;
+const $=id=>document.getElementById(id);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+function openDB(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE,{keyPath:'id'});r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
+function dbPut(item){return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(item);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
+function dbGet(id){return new Promise((res,rej)=>{const r=db.transaction(STORE).objectStore(STORE).get(id);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function dbDelete(id){return new Promise(res=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(id);tx.oncomplete=res})}
+function freshNote(folder=activeFolder==='All Notes'?'My Notes':activeFolder){return {id:uid(),title:'Untitled Note',content:'',folder,created:new Date().toISOString(),updated:new Date().toISOString(),media:[]}}
+function current(){return notes.find(n=>n.id===activeId)}
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function fmtDate(s){return new Date(s).toLocaleString()}
+function setStatus(t='● All changes saved automatically'){$('saveStatus').textContent=t}
+function saveSoon(){setStatus('◌ Saving…');clearTimeout(saveTimer);saveTimer=setTimeout(saveCurrent,250)}
+function saveCurrent(){const n=current();if(!n)return;n.title=$('title').value.trim()||'Untitled Note';n.content=$('editor').innerHTML;n.updated=new Date().toISOString();persist();renderLists();$('meta').textContent=`Created ${fmtDate(n.created)} · Updated ${fmtDate(n.updated)}`;setStatus('● Saved on this device')}
+function persist(){try{localStorage.setItem('aegis_notes_v1',JSON.stringify(notes));localStorage.setItem('aegis_folders_v1',JSON.stringify(folders))}catch(e){setStatus('Storage full — export notes to keep a backup')}}
+function selectNote(id){if(activeId)saveCurrent();activeId=id;renderEditor();renderLists()}
+function newNote(){saveCurrent();const n=freshNote();notes.unshift(n);activeId=n.id;activeFolder='All Notes';persist();renderAll();$('title').focus();$('title').select()}
+function renderSavedNotes(){
+ const box=$('savedNotes');box.innerHTML='';
+ const visible=activeFolder==='All Notes'?notes:notes.filter(n=>n.folder===activeFolder);
+ $('savedCount').textContent=visible.length;
+ if(!visible.length){box.innerHTML='<div class="empty">ابھی کوئی محفوظ نوٹ نہیں۔</div>';return}
+ visible.forEach(n=>{
+  const b=document.createElement('button');
+  b.className='folder'+(n.id===activeId?' active':'');
+  b.innerHTML=`<span>▤ &nbsp; ${safe(n.title||'Untitled Note')}</span><span>${(n.media||[]).length?('📎'+n.media.length):'›'}</span>`;
+  b.title=`${n.folder||'My Notes'} · ${fmtDate(n.updated||n.created)}`;
+  b.onclick=()=>{if(activeId)saveCurrent();activeId=n.id;activeFolder='All Notes';renderAll()};
+  box.appendChild(b);
+ });
+}
+function renderFolders(){const box=$('folders');box.innerHTML='';folders.forEach(f=>{const b=document.createElement('button');b.className='folder'+(activeFolder===f?' active':'');b.innerHTML=`<span>▱ &nbsp; ${safe(f)}</span><span>${notes.filter(n=>n.folder===f).length}</span>`;b.onclick=()=>{saveCurrent();activeFolder=f;const found=notes.find(n=>n.folder===f);if(found)activeId=found.id;else{const n=freshNote(f);notes.unshift(n);activeId=n.id}renderAll()};box.appendChild(b)})}
+function renderTabs(){const t=$('tabs');t.innerHTML='';const all=document.createElement('button');all.className='tab'+(activeFolder==='All Notes'?' active':'');all.textContent='All Notes';all.onclick=()=>{activeFolder='All Notes';renderAll()};t.appendChild(all);const n=current();if(n){const b=document.createElement('button');b.className='tab active';b.textContent=(n.title||'Untitled Note')+'  •';t.appendChild(b)}const plus=document.createElement('button');plus.textContent='＋';plus.onclick=newNote;t.appendChild(plus)}
+async function renderLists(){
+ renderFolders();renderSavedNotes();renderTabs();$('noteCount').textContent=notes.length;
+ const n=current();if(!n)return;
+ const groups={videos:[],audios:[],images:[],files:[]};
+ (n.media||[]).forEach(m=>{
+  const k=m.type.startsWith('video/')?'videos':m.type.startsWith('audio/')?'audios':m.type.startsWith('image/')?'images':'files';
+  groups[k].push(m);
+ });
+ const countIds={videos:'videoCount',audios:'audioCount',images:'imageCount',files:'fileCount'};
+ for(const [k,arr] of Object.entries(groups)){
+  const el=$(k);el.innerHTML='';
+  $(countIds[k]).textContent=`(${arr.length})`;
+  if(!arr.length){el.innerHTML='<div class="empty">No files added yet.</div>';continue}
+  for(const m of arr){
+   const full=await dbGet(m.id);
+   if(!full){const missing=document.createElement('div');missing.className='empty';missing.textContent=m.name+' — فائل براؤزر اسٹوریج میں نہیں ملی۔';el.appendChild(missing);continue}
+   const row=document.createElement('div');row.className='media-item';
+   const blob=new Blob([full.data],{type:full.type||m.type});
+   const url=URL.createObjectURL(blob);
+   const left=document.createElement('div');left.className='preview';
+   if(m.type.startsWith('image/')){
+    const img=document.createElement('img');img.src=url;img.alt=m.name;img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:6px';left.appendChild(img);
+   }else if(m.type.startsWith('video/')){
+    const video=document.createElement('video');video.controls=true;video.src=url;video.style.cssText='width:100%;height:76px;object-fit:contain;background:#000;border-radius:6px';left.appendChild(video);
+   }else if(m.type.startsWith('audio/')){left.textContent='♫'}else{left.textContent='▤'}
+   const right=document.createElement('div');right.innerHTML=`<div class="media-name">${safe(m.name)}</div><div class="media-meta">${(m.size/1024/1024).toFixed(2)} MB · ${safe(m.type||'File')}</div>`;
+   if(m.type.startsWith('audio/')){const audio=document.createElement('audio');audio.controls=true;audio.src=url;audio.style.cssText='width:100%;height:35px;margin-top:7px';right.appendChild(audio)}
+   const controls=document.createElement('div');controls.className='media-controls';
+   const dl=document.createElement('button');dl.textContent='⇩ Save';dl.onclick=()=>downloadBlob(blob,m.name);
+   const del=document.createElement('button');del.textContent='✕ Remove';del.onclick=async()=>{n.media=n.media.filter(x=>x.id!==m.id);await dbDelete(m.id);saveCurrent();await renderLists()};
+   controls.append(dl,del);right.appendChild(controls);row.append(left,right);el.appendChild(row);
+  }
+ }
+ const bytes=notes.reduce((s,n)=>s+(n.media||[]).reduce((a,m)=>a+(m.size||0),0),0);
+ $('storageText').textContent=`${notes.length} notes · ${(bytes/1024/1024).toFixed(1)} MB media`;
+ $('storageBar').style.width=Math.min(100,bytes/(10*1024*1024)*100)+'%';
+ $('storageSub').textContent='Media saved in this browser';
+}
+function renderEditor(){const n=current();if(!n)return;$('title').value=n.title;$('editor').innerHTML=n.content||'';$('meta').textContent=`Created ${fmtDate(n.created)} · Updated ${fmtDate(n.updated)}`;updateWords();renderMediaOnly()}
+function renderMediaOnly(){renderLists()}
+function renderAll(){if(!notes.length){const n=freshNote();notes.push(n);activeId=n.id}if(!current())activeId=(notes.find(n=>activeFolder==='All Notes'||n.folder===activeFolder)||notes[0]).id;renderEditor();renderLists()}
+function updateWords(){const txt=$('editor').innerText.trim();const words=txt?txt.split(/\s+/).length:0;$('wordcount').textContent=words+' words'}
+function downloadBlob(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+async function addFiles(files){const n=current();if(!n)return;for(const f of files){const id=uid();const data=await f.arrayBuffer();const m={id,name:f.name,type:f.type||'application/octet-stream',size:f.size,data};try{await dbPut(m);n.media.push({id,name:m.name,type:m.type,size:m.size})}catch(e){alert('یہ فائل محفوظ نہیں ہو سکی۔ ممکن ہے براؤزر کی اسٹوریج بھر گئی ہو۔');break}}saveCurrent();renderLists()}
+async function hydrateMedia(){for(const n of notes){const clean=[];for(const m of n.media||[]){const full=await dbGet(m.id);if(full)clean.push({id:full.id,name:full.name,type:full.type,size:full.size})}n.media=clean}}
+async function makeExportFile(){
+ saveCurrent();const n=current();if(!n)return null;
+ const pack={format:'AEGIS Notepad export',version:1,note:{...n},media:[]};
+ for(const m of n.media||[]){const full=await dbGet(m.id);if(full){const bytes=new Uint8Array(full.data);let bin='';for(let i=0;i<bytes.length;i+=0x8000)bin+=String.fromCharCode(...bytes.subarray(i,i+0x8000));pack.media.push({...m,data:btoa(bin)})}}
+ const safeName=(n.title||'note').replace(/[\\/:*?"<>|]/g,'_');
+ return new File([JSON.stringify(pack)],safeName+'.aegis.json',{type:'application/json'});
+}
+async function exportNote(){
+ try{const file=await makeExportFile();if(file)down
